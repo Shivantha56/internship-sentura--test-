@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.IOException;
+import java.util.Base64;
 
 import static org.apache.logging.log4j.message.MapMessage.MapFormat.JSON;
 
@@ -29,8 +30,16 @@ public class User {
 
     }
 
-    public void getAll(){
+    // get all user details
+    @GetMapping("/all")
+    public String getAll() throws IOException {
+        Request request = new Request.Builder()
+                .url("/api/users")
+                .build();
 
+        try (Response response = client.newCall(request).execute()) {
+            return response.body().string();
+        }
     }
 
     @ResponseBody
@@ -50,7 +59,7 @@ public class User {
     public String updateUser(@PathVariable String userId , @org.springframework.web.bind.annotation.RequestBody UserDTO userDTO){
         RequestBody body = RequestBody.create(String.valueOf(userDTO), JSON);
         Request request = new Request.Builder()
-                .url("/api/users")
+                .url("/api/users/"+userId)
                 .post(body)
                 .build();
         try (Response response = client.newCall(request).execute()) {
@@ -58,6 +67,17 @@ public class User {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @DeleteMapping
+    public void deleteUser(){
+
+    }
+
+    /* get an access token from the user */
+
+    public void getAccessToken(){
+
     }
 
 
