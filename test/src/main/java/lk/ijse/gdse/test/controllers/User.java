@@ -117,7 +117,20 @@ public class User {
         }
     }
 
+    /* get access token */
+    @GetMapping("/get/{userId}/token")
+    public String getAccessToken(@PathVariable String userId) throws IOException {
+        RequestBody body = RequestBody.create("",JSON);
+        Request request = new Request.Builder()
+                .url("https://a0f7ba0c80b543d48b04006017fee747.weavy.io/api/users/"+userId+"/tokens")
+                .header("Authorization","Bearer wys_mBxRK5cG5EsmbqzDdmvKYC3ixdyyj623DZdr")
+                .post(body)
+                .build();
 
+        try (Response response = client.newCall(request).execute()) {
+            return response.body().string();
+        }
+    }
 
     /* register the user */
     @PostMapping("/reg")
