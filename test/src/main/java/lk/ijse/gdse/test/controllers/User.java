@@ -88,26 +88,43 @@ public class User {
 
     // get access token
 
-    @GetMapping("/token")
-    public String getAccessToken(){
+//    @GetMapping("/token")
+//    public String getAccessToken(){
+//        Request request = new Request.Builder()
+//                .url("https://a0f7ba0c80b543d48b04006017fee747.weavy.io/api/users/dilshan/tokens")
+//                .get()
+//                .header("Content-Type","application/json")
+//                .build();
+//        try (Response response = client.newCall(request).execute()) {
+//            return response.body().string();
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
+
+
+    //get user data
+    @GetMapping("/get/{userId}")
+    public String getUserData(@PathVariable String userId) throws IOException {
+        ///api/users/{id}
         Request request = new Request.Builder()
-                .url("https://a0f7ba0c80b543d48b04006017fee747.weavy.io/api/users/dilshan/tokens")
-                .get()
-                .header("Content-Type","application/json")
+                .url("https://a0f7ba0c80b543d48b04006017fee747.weavy.io/api/users/"+userId)
+                .header("Authorization","Bearer wys_mBxRK5cG5EsmbqzDdmvKYC3ixdyyj623DZdr")
                 .build();
+
         try (Response response = client.newCall(request).execute()) {
             return response.body().string();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
     }
 
-    /* generating access token */
-    @GetMapping("/reg")
+
+
+    /* register the user */
+    @PostMapping("/reg")
     public String createUser(@org.springframework.web.bind.annotation.RequestBody String user){
         RequestBody body = RequestBody.create(user,JSON);
         Request request = new Request.Builder()
-                .url("https://a0f7ba0c80b543d48b04006017fee747.weavy.io/api/users/dilshan/tokens")
+                .url("https://a0f7ba0c80b543d48b04006017fee747.weavy.io/api/users")
                 .post(body)
                 .header("Content-Type","application/json")
                 .header("Authorization","Bearer wys_mBxRK5cG5EsmbqzDdmvKYC3ixdyyj623DZdr")
@@ -118,6 +135,7 @@ public class User {
             throw new RuntimeException(e);
         }
     }
+
 
 
 }
