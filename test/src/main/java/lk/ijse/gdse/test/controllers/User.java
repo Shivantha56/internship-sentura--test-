@@ -20,34 +20,6 @@ public class User {
     final String URL = "https://a0f7ba0c80b543d48b04006017fee747.weavy.io";
 
 
-    @ResponseBody
-    @GetMapping("{userId}")
-    public String getUser(@PathVariable String userId) throws IOException {
-        ///api/users/{id}
-        Request request = new Request.Builder()
-                .url(URL+"/api/users/"+userId)
-                .build();
-
-        try (Response response = client.newCall(request).execute()) {
-            return response.body().string();
-        }
-    }
-    //
-
-    @PutMapping("{userId}")
-    public String updateUser(@PathVariable String userId , @org.springframework.web.bind.annotation.RequestBody UserDTO userDTO){
-        RequestBody body = RequestBody.create(String.valueOf(userDTO), JSON);
-        Request request = new Request.Builder()
-                .url(URL+"/api/users/"+userId)
-                .put(body)
-                .build();
-        try (Response response = client.newCall(request).execute()) {
-            return response.body().string();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     //delete user details
     @DeleteMapping("{userId}")
     public String deleteUser(@PathVariable String userId) throws IOException {
@@ -101,6 +73,20 @@ public class User {
                 .post(body)
                 .header("Content-Type","application/json")
                 .header("Authorization","Bearer wys_mBxRK5cG5EsmbqzDdmvKYC3ixdyyj623DZdr")
+                .build();
+        try (Response response = client.newCall(request).execute()) {
+            return response.body().string();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @PutMapping("{userId}")
+    public String updateUser(@PathVariable String userId , @org.springframework.web.bind.annotation.RequestBody UserDTO userDTO){
+        RequestBody body = RequestBody.create(String.valueOf(userDTO), JSON);
+        Request request = new Request.Builder()
+                .url(URL+"/api/users/"+userId)
+                .put(body)
                 .build();
         try (Response response = client.newCall(request).execute()) {
             return response.body().string();
