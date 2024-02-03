@@ -26,7 +26,7 @@ public class User {
 
         RequestBody body = RequestBody.create(String.valueOf(userDTO), JSON);
         Request request = new Request.Builder()
-                .url(URL+"/api/users")
+                .url("")
                 .post(body)
                 .header("Authorization","Bearer wys_mBxRK5cG5EsmbqzDdmvKYC3ixdyyj623DZdr")
                 .header("Content-Type","application/json")
@@ -37,16 +37,16 @@ public class User {
     }
 
     // get all user details
-    @GetMapping("/all")
-    public String getAll() throws IOException {
-        Request request = new Request.Builder()
-                .url(URL+"/api/users")
-                .build();
-
-        try (Response response = client.newCall(request).execute()) {
-            return response.body().string();
-        }
-    }
+//    @GetMapping("/all")
+//    public String getAll() throws IOException {
+//        Request request = new Request.Builder()
+//                .url("https://a0f7ba0c80b543d48b04006017fee747.weavy.io/api/users")
+//                .build();
+//
+//        try (Response response = client.newCall(request).execute()) {
+//            return response.body().string();
+//        }
+//    }
 
     @ResponseBody
     @GetMapping("{userId}")
@@ -86,29 +86,26 @@ public class User {
         client.newCall(request);
     }
 
-    // get access token
-
-//    @GetMapping("/token")
-//    public String getAccessToken(){
+//
+//    //get user data
+//    @GetMapping("/get/{userId}")
+//    public String getUserData(@PathVariable String userId) throws IOException {
+//        ///api/users/{id}
 //        Request request = new Request.Builder()
-//                .url("https://a0f7ba0c80b543d48b04006017fee747.weavy.io/api/users/dilshan/tokens")
-//                .get()
-//                .header("Content-Type","application/json")
+//                .url("https://a0f7ba0c80b543d48b04006017fee747.weavy.io/api/users/"+userId)
+//                .header("Authorization","Bearer wys_mBxRK5cG5EsmbqzDdmvKYC3ixdyyj623DZdr")
 //                .build();
+//
 //        try (Response response = client.newCall(request).execute()) {
 //            return response.body().string();
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
 //        }
 //    }
 
-
-    //get user data
-    @GetMapping("/get/{userId}")
-    public String getUserData(@PathVariable String userId) throws IOException {
-        ///api/users/{id}
+    // get all user details
+    @GetMapping("/all")
+    public String getAll() throws IOException {
         Request request = new Request.Builder()
-                .url("https://a0f7ba0c80b543d48b04006017fee747.weavy.io/api/users/"+userId)
+                .url("https://a0f7ba0c80b543d48b04006017fee747.weavy.io/api/users")
                 .header("Authorization","Bearer wys_mBxRK5cG5EsmbqzDdmvKYC3ixdyyj623DZdr")
                 .build();
 
