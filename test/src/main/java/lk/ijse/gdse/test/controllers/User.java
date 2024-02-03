@@ -2,10 +2,9 @@ package lk.ijse.gdse.test.controllers;
 
 import lk.ijse.gdse.test.dto.UserDTO;
 import okhttp3.*;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import okhttp3.RequestBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.IOException;
 
@@ -18,7 +17,7 @@ public class User {
 
     OkHttpClient client = new OkHttpClient();
     @PostMapping(consumes = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public String save(UserDTO userDTO) throws IOException {
+    public String save(@org.springframework.web.bind.annotation.RequestBody UserDTO userDTO) throws IOException {
         RequestBody body = RequestBody.create(String.valueOf(userDTO), JSON);
         Request request = new Request.Builder()
                 .url("/api/users")
@@ -34,6 +33,7 @@ public class User {
 
     }
 
+    @ResponseBody
     @GetMapping("{userId}")
     public String getUser(@PathVariable String userId) throws IOException {
         ///api/users/{id}
@@ -45,5 +45,21 @@ public class User {
             return response.body().string();
         }
     }
+
+    @PutMapping("{userId}")
+    public String updateUser(@PathVariable String userId , @org.springframework.web.bind.annotation.RequestBody UserDTO userDTO){
+        RequestBody body = RequestBody.create(String.valueOf(userDTO), JSON);
+        Request request = new Request.Builder()
+                .url("/api/users")
+                .post(body)
+                .build();
+        try (Response response = client.newCall(request).execute()) {
+            return response.body().string();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
 
 }
