@@ -15,13 +15,18 @@ import static org.apache.logging.log4j.message.MapMessage.MapFormat.JSON;
 public class User {
 
     public static final MediaType JSON = MediaType.get("application/json");
-
+    //we can add this as the spring manage bean
     OkHttpClient client = new OkHttpClient();
+    final String URL = "https://a0f7ba0c80b543d48b04006017fee747.weavy.io";
+
     @PostMapping(consumes = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public String save(@org.springframework.web.bind.annotation.RequestBody UserDTO userDTO) throws IOException {
+
+//        String userImage = Base64.getEncoder().encodeToString(userDTO.getPicture())
+
         RequestBody body = RequestBody.create(String.valueOf(userDTO), JSON);
         Request request = new Request.Builder()
-                .url("/api/users")
+                .url(URL+"/api/users")
                 .post(body)
                 .build();
         try (Response response = client.newCall(request).execute()) {
@@ -34,7 +39,7 @@ public class User {
     @GetMapping("/all")
     public String getAll() throws IOException {
         Request request = new Request.Builder()
-                .url("/api/users")
+                .url(URL+"/api/users")
                 .build();
 
         try (Response response = client.newCall(request).execute()) {
@@ -47,7 +52,7 @@ public class User {
     public String getUser(@PathVariable String userId) throws IOException {
         ///api/users/{id}
         Request request = new Request.Builder()
-                .url("/api/users/"+userId)
+                .url(URL+"/api/users/"+userId)
                 .build();
 
         try (Response response = client.newCall(request).execute()) {
@@ -59,8 +64,8 @@ public class User {
     public String updateUser(@PathVariable String userId , @org.springframework.web.bind.annotation.RequestBody UserDTO userDTO){
         RequestBody body = RequestBody.create(String.valueOf(userDTO), JSON);
         Request request = new Request.Builder()
-                .url("/api/users/"+userId)
-                .post(body)
+                .url(URL+"/api/users/"+userId)
+                .put(body)
                 .build();
         try (Response response = client.newCall(request).execute()) {
             return response.body().string();
@@ -69,17 +74,15 @@ public class User {
         }
     }
 
-    @DeleteMapping
-    public void deleteUser(){
+    @DeleteMapping("{userId}")
+    public void deleteUser(@PathVariable String userId){
 
+        Request request = new Request.Builder()
+                .url(URL+"api/users/"+userId+"/trash")
+                .delete()
+                .build();
+        client.newCall(request);
     }
-
-    /* get an access token from the user */
-
-    public void getAccessToken(){
-
-    }
-
 
 
 }
