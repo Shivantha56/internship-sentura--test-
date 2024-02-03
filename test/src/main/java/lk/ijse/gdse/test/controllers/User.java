@@ -19,34 +19,6 @@ public class User {
     OkHttpClient client = new OkHttpClient();
     final String URL = "https://a0f7ba0c80b543d48b04006017fee747.weavy.io";
 
-    @PostMapping(consumes = org.springframework.http.MediaType.APPLICATION_JSON_VALUE , headers = {})
-    public String save(@org.springframework.web.bind.annotation.RequestBody UserDTO userDTO) throws IOException {
-//        System.out.println("dd");
-//        String userImage = Base64.getEncoder().encodeToString(userDTO.getPicture())
-
-        RequestBody body = RequestBody.create(String.valueOf(userDTO), JSON);
-        Request request = new Request.Builder()
-                .url("")
-                .post(body)
-                .header("Authorization","Bearer wys_mBxRK5cG5EsmbqzDdmvKYC3ixdyyj623DZdr")
-                .header("Content-Type","application/json")
-                .build();
-        try (Response response = client.newCall(request).execute()) {
-            return response.body().string();
-        }
-    }
-
-    // get all user details
-//    @GetMapping("/all")
-//    public String getAll() throws IOException {
-//        Request request = new Request.Builder()
-//                .url("https://a0f7ba0c80b543d48b04006017fee747.weavy.io/api/users")
-//                .build();
-//
-//        try (Response response = client.newCall(request).execute()) {
-//            return response.body().string();
-//        }
-//    }
 
     @ResponseBody
     @GetMapping("{userId}")
@@ -76,30 +48,21 @@ public class User {
         }
     }
 
+    //delete user details
     @DeleteMapping("{userId}")
-    public void deleteUser(@PathVariable String userId){
-
+    public String deleteUser(@PathVariable String userId) throws IOException {
+        RequestBody body = RequestBody.create("",JSON);
         Request request = new Request.Builder()
-                .url(URL+"api/users/"+userId+"/trash")
-                .delete()
+                .url("https://a0f7ba0c80b543d48b04006017fee747.weavy.io/api/users/"+userId+"/trash")
+                .header("Authorization","Bearer wys_mBxRK5cG5EsmbqzDdmvKYC3ixdyyj623DZdr")
+                .post(body)
                 .build();
         client.newCall(request);
+        try (Response response = client.newCall(request).execute()) {
+            return response.body().string();
+        }
     }
 
-//
-//    //get user data
-//    @GetMapping("/get/{userId}")
-//    public String getUserData(@PathVariable String userId) throws IOException {
-//        ///api/users/{id}
-//        Request request = new Request.Builder()
-//                .url("https://a0f7ba0c80b543d48b04006017fee747.weavy.io/api/users/"+userId)
-//                .header("Authorization","Bearer wys_mBxRK5cG5EsmbqzDdmvKYC3ixdyyj623DZdr")
-//                .build();
-//
-//        try (Response response = client.newCall(request).execute()) {
-//            return response.body().string();
-//        }
-//    }
 
     // get all user details
     @GetMapping("/all")
