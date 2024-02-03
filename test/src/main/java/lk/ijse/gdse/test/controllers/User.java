@@ -12,6 +12,7 @@ import java.util.Base64;
 import static org.apache.logging.log4j.message.MapMessage.MapFormat.JSON;
 
 @RequestMapping("/api/v1/user")
+@RestController
 public class User {
 
     public static final MediaType JSON = MediaType.get("application/json");
@@ -21,6 +22,7 @@ public class User {
 
     @PostMapping(consumes = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public String save(@org.springframework.web.bind.annotation.RequestBody UserDTO userDTO) throws IOException {
+        System.out.println("dd");
 
 //        String userImage = Base64.getEncoder().encodeToString(userDTO.getPicture())
 
